@@ -13,7 +13,7 @@ import cse.project.persistence.PersistenceService;
 import io.grpc.stub.StreamObserver;
 import static java.lang.Math.toIntExact;
 
-public class RatingServiceRate extends RatingServiceImplBase{
+public class RatingService extends RatingServiceImplBase{
 	
 	private PersistenceService persistenceService = new PersistenceService();
 	

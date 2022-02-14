@@ -1,4 +1,4 @@
-package cse.project.persistence;
+package hipstershop;
 
 import java.sql.*;
 

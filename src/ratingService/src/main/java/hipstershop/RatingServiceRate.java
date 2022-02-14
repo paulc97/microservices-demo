@@ -1,19 +1,11 @@
-package cse.project.ratingservice;
+package hipstershop;
 
-import cse.project.grpc.ApiResponse;
-import cse.project.grpc.Empty;
-import cse.project.grpc.ProductRatingRequest;
-import cse.project.grpc.ProductRatingResponse;
-import cse.project.grpc.ProductRequest;
-
-import cse.project.grpc.RatingServiceGrpc.RatingServiceImplBase;
-import cse.project.grpc.ShopRatingResponse;
-import cse.project.grpc.ShopRequest;
-import cse.project.persistence.PersistenceService;
 import io.grpc.stub.StreamObserver;
 import static java.lang.Math.toIntExact;
 
-public class RatingService extends RatingServiceImplBase{
+import hipstershop.RatingServiceGrpc.RatingServiceImplBase;
+
+public class RatingServiceRate extends RatingServiceImplBase{
 	
 	private PersistenceService persistenceService = new PersistenceService();
 	

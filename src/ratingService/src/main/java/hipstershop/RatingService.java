@@ -1,5 +1,8 @@
 package hipstershop;
 
+import hipstershop.*;
+import hipstershop.grpc.RatingServiceGrpc;
+import hipstershop.grpc.RatingServiceOuterClass;
 import hipstershop.persistence.PersistenceService;
 import io.grpc.stub.StreamObserver;
 import static java.lang.Math.toIntExact;
@@ -9,10 +12,10 @@ public class RatingService extends RatingServiceGrpc.RatingServiceImplBase {
 	private hipstershop.persistence.PersistenceService persistenceService = new PersistenceService();
 	
 	@Override
-	public void rateProduct(ProductRequest request, StreamObserver<ApiResponse> responseObserver) {
+	public void rateProduct(RatingServiceOuterClass.ProductRequest request, StreamObserver<RatingServiceOuterClass.ApiResponse> responseObserver) {
 		
 		persistenceService.saveProductRating(request.getProductId(), toIntExact(request.getRating()));
-		ApiResponse.Builder response = ApiResponse.newBuilder();
+		RatingServiceOuterClass.ApiResponse.Builder response = RatingServiceOuterClass.ApiResponse.newBuilder();
 		
 		response.setResponseMessage("SUCCESS: product rating saved");
 		responseObserver.onNext(response.build());
@@ -20,9 +23,9 @@ public class RatingService extends RatingServiceGrpc.RatingServiceImplBase {
 	}
 
 	@Override
-	public void getProductRating(ProductRatingRequest request, StreamObserver<ProductRatingResponse> responseObserver) {
+	public void getProductRating(RatingServiceOuterClass.ProductRatingRequest request, StreamObserver<RatingServiceOuterClass.ProductRatingResponse> responseObserver) {
 		
-		ProductRatingResponse.Builder response = ProductRatingResponse.newBuilder();
+		RatingServiceOuterClass.ProductRatingResponse.Builder response = RatingServiceOuterClass.ProductRatingResponse.newBuilder();
 		
 		response.setRating(persistenceService.getProductRating(request.getProductId()));
 		response.setRatingCount(Long.valueOf(persistenceService.getNumberOfProductRatings(request.getProductId())));
@@ -32,10 +35,10 @@ public class RatingService extends RatingServiceGrpc.RatingServiceImplBase {
 	}
 
 	@Override
-	public void rateShop(ShopRequest request, StreamObserver<ApiResponse> responseObserver) {
+	public void rateShop(RatingServiceOuterClass.ShopRequest request, StreamObserver<RatingServiceOuterClass.ApiResponse> responseObserver) {
 		
 		persistenceService.saveShopRating(toIntExact(request.getRating()));
-		ApiResponse.Builder response = ApiResponse.newBuilder();
+		RatingServiceOuterClass.ApiResponse.Builder response = RatingServiceOuterClass.ApiResponse.newBuilder();
 		
 		response.setResponseMessage("SUCCESS: shop rating saved");
 		responseObserver.onNext(response.build());
@@ -43,9 +46,9 @@ public class RatingService extends RatingServiceGrpc.RatingServiceImplBase {
 	}
 
 	@Override
-	public void getShopRating(Empty request, StreamObserver<ShopRatingResponse> responseObserver) {
+	public void getShopRating(RatingServiceOuterClass.Empty request, StreamObserver<RatingServiceOuterClass.ShopRatingResponse> responseObserver) {
 		
-		ShopRatingResponse.Builder response = ShopRatingResponse.newBuilder();
+		RatingServiceOuterClass.ShopRatingResponse.Builder response = RatingServiceOuterClass.ShopRatingResponse.newBuilder();
 		
 		response.setRating(persistenceService.getShopRating());
 		response.setRatingCount(Long.valueOf(persistenceService.getNumberOfShopRatings()));

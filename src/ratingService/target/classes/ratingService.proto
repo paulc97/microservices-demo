@@ -1,6 +1,6 @@
 syntax = "proto3";
-option java_multiple_files = true;
 option java_package = "hipstershop";
+package hipstershop;
 
 service RatingService{
 	rpc RateProduct(ProductRequest) returns (ApiResponse) {}

@@ -18,7 +18,7 @@ public class RatingService extends RatingServiceImplBase{
 	private PersistenceService persistenceService = new PersistenceService();
 	
 	@Override
-	public void rateProduct(ProductRequest request, StreamObserver<ApiResponse> responseObserver) {
+	public void RateProduct(ProductRequest request, StreamObserver<ApiResponse> responseObserver) {
 		
 		persistenceService.saveProductRating(request.getProductId(), toIntExact(request.getRating()));
 		ApiResponse.Builder response = ApiResponse.newBuilder();
@@ -29,7 +29,7 @@ public class RatingService extends RatingServiceImplBase{
 	}
 
 	@Override
-	public void getProductRating(ProductRatingRequest request, StreamObserver<ProductRatingResponse> responseObserver) {
+	public void GetProductRating(ProductRatingRequest request, StreamObserver<ProductRatingResponse> responseObserver) {
 		
 		ProductRatingResponse.Builder response = ProductRatingResponse.newBuilder();
 		
@@ -41,7 +41,7 @@ public class RatingService extends RatingServiceImplBase{
 	}
 
 	@Override
-	public void rateShop(ShopRequest request, StreamObserver<ApiResponse> responseObserver) {
+	public void RateShop(ShopRequest request, StreamObserver<ApiResponse> responseObserver) {
 		
 		persistenceService.saveShopRating(toIntExact(request.getRating()));
 		ApiResponse.Builder response = ApiResponse.newBuilder();
@@ -52,7 +52,7 @@ public class RatingService extends RatingServiceImplBase{
 	}
 
 	@Override
-	public void getShopRating(Empty request, StreamObserver<ShopRatingResponse> responseObserver) {
+	public void GetShopRating(Empty request, StreamObserver<ShopRatingResponse> responseObserver) {
 		
 		ShopRatingResponse.Builder response = ShopRatingResponse.newBuilder();
 		

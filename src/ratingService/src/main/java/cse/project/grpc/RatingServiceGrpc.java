@@ -1,5 +1,7 @@
 package cse.project.grpc;
 
+import io.grpc.stub.StreamObserver;
+
 import static io.grpc.MethodDescriptor.generateFullMethodName;
 import static io.grpc.stub.ClientCalls.asyncBidiStreamingCall;
 import static io.grpc.stub.ClientCalls.asyncClientStreamingCall;
@@ -242,6 +244,14 @@ public final class RatingServiceGrpc {
                   this, METHODID_GET_SHOP_RATING)))
           .build();
     }
+
+    public abstract void RateProduct(ProductRequest request, StreamObserver<ApiResponse> responseObserver);
+
+    public abstract void GetProductRating(ProductRatingRequest request, StreamObserver<ProductRatingResponse> responseObserver);
+
+    public abstract void RateShop(ShopRequest request, StreamObserver<ApiResponse> responseObserver);
+
+    public abstract void GetShopRating(Empty request, StreamObserver<ShopRatingResponse> responseObserver);
   }
 
   /**

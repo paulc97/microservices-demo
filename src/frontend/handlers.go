@@ -140,7 +140,7 @@ func (fe *frontendServer) setRatingHandler(w http.ResponseWriter, r *http.Reques
 		log.WithField("orderId", orderId).WithField("Rating", rate).Debug("New Rating")
 
 		//Send Rating to Backend
-		 answ, err := pb.NewRatingServiceClient(fe.checkoutSvcConn).
+		 answ, err := pb.NewRatingServiceClient(fe.ratingSvcConn).
 		 	RateShop(r.Context(), &pb.ShopRequest{
 		 		Rating: rate,
 		 	})

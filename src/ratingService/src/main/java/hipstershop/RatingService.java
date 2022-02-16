@@ -1,14 +1,5 @@
 package hipstershop;
 
-import hipstershop.grpc.ApiResponse;
-import hipstershop.grpc.Empty;
-import hipstershop.grpc.ProductRatingRequest;
-import hipstershop.grpc.ProductRatingResponse;
-import hipstershop.grpc.ProductRequest;
-
-import hipstershop.grpc.ShopRatingResponse;
-import hipstershop.grpc.ShopRequest;
-import hipstershop.grpc.RatingServiceGrpc;
 import hipstershop.persistence.PersistenceService;
 import io.grpc.stub.StreamObserver;
 import static java.lang.Math.toIntExact;
@@ -18,7 +9,7 @@ public class RatingService extends RatingServiceGrpc.RatingServiceImplBase {
 	private hipstershop.persistence.PersistenceService persistenceService = new PersistenceService();
 	
 	@Override
-	public void RateProduct(ProductRequest request, StreamObserver<ApiResponse> responseObserver) {
+	public void rateProduct(ProductRequest request, StreamObserver<ApiResponse> responseObserver) {
 		
 		persistenceService.saveProductRating(request.getProductId(), toIntExact(request.getRating()));
 		ApiResponse.Builder response = ApiResponse.newBuilder();
@@ -29,7 +20,7 @@ public class RatingService extends RatingServiceGrpc.RatingServiceImplBase {
 	}
 
 	@Override
-	public void GetProductRating(ProductRatingRequest request, StreamObserver<ProductRatingResponse> responseObserver) {
+	public void getProductRating(ProductRatingRequest request, StreamObserver<ProductRatingResponse> responseObserver) {
 		
 		ProductRatingResponse.Builder response = ProductRatingResponse.newBuilder();
 		
@@ -41,7 +32,7 @@ public class RatingService extends RatingServiceGrpc.RatingServiceImplBase {
 	}
 
 	@Override
-	public void RateShop(ShopRequest request, StreamObserver<ApiResponse> responseObserver) {
+	public void rateShop(ShopRequest request, StreamObserver<ApiResponse> responseObserver) {
 		
 		persistenceService.saveShopRating(toIntExact(request.getRating()));
 		ApiResponse.Builder response = ApiResponse.newBuilder();
@@ -52,7 +43,7 @@ public class RatingService extends RatingServiceGrpc.RatingServiceImplBase {
 	}
 
 	@Override
-	public void GetShopRating(Empty request, StreamObserver<ShopRatingResponse> responseObserver) {
+	public void getShopRating(Empty request, StreamObserver<ShopRatingResponse> responseObserver) {
 		
 		ShopRatingResponse.Builder response = ShopRatingResponse.newBuilder();
 		

@@ -37,11 +37,41 @@
 
         <div class="row hot-products-row px-xl-6">
           <div class="col-12">
-            <h3>How Clients like our Shop : {{ $.avgRating }} / 5</h3>
-            <h3>Rated by {{$.ratingCount}} customers</h3>
+            <h3>How Clients like our Shop ({{$.ratingCount}}) :<span class="rate" >
+              {{ if eq $.avgRating 5}}
+              <input type="radio" id="star5" name="rate" value="5" disabled checked/>
+              {{ else }}
+              <input type="radio" id="star5" name="rate" value="5" disabled/>
+              {{ end }}
+              <label for="star5" title="text">5 stars</label>
+              {{ if eq $.avgRating 4}}
+              <input type="radio" id="star4" name="rate" value="4" disabled checked/>
+              {{ else }}
+              <input type="radio" id="star4" name="rate" value="4" disabled/>
+              {{ end }}
+              <label for="star4" title="text">4 stars</label>
+              {{ if eq $.avgRating 3}}
+              <input type="radio" id="star3" name="rate" value="3" disabled checked/>
+              {{ else }}
+              <input type="radio" id="star3" name="rate" value="3" disabled/>
+              {{ end }}
+              <label for="star3" title="text">3 stars</label>
+              {{ if eq $.avgRating 2}}
+              <input type="radio" id="star2" name="rate" value="2" disabled checked/>
+              {{ else }}
+              <input type="radio" id="star2" name="rate" value="2" disabled/>
+              {{ end }}
+              <label for="star2" title="text">2 stars</label>
+              {{ if eq $.avgRating 1}}
+              <input type="radio" id="star1" name="rate" value="1" disabled checked/>
+              {{ else }}
+              <input type="radio" id="star1" name="rate" value="1" disabled/>
+              {{ end }}
+              <label for="star1" title="text">1 star</label> 
+            </span></h3>
+            <!--h3>Rated by {{$.ratingCount}} customers</h3-->
           </div>
           <!--  Showing avgRating var defined in handlers.go-->
-          
           <div class="col-12">
             <h3>Hot Products</h3>
           </div>

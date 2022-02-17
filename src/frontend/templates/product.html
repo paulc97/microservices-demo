@@ -34,8 +34,10 @@
             <!-- make orderID usable in HTTP request -->
             <input type="hidden" name="product_id" value="{{$.product.Item.Id}}" />
             <!-- Rating input 1-5 Stars -->
-                <div class="rate" >
-                Rate this item
+                
+                <h3>Rate this item</h3>
+                
+                  <div class="rate" >
                     <input type="radio" id="star5" name="rate" value="5"/>
                     <label for="star5" title="text">5 stars</label>
                     <input type="radio" id="star4" name="rate" value="4" />
@@ -46,16 +48,50 @@
                     <label for="star2" title="text">2 stars</label>
                     <input type="radio" id="star1" name="rate" value="1" />
                     <label for="star1" title="text">1 star</label>
-                </div>
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <button class="cymbal-button-primary"type="submit">
-                            Rate 
-                        </button>
-                    </div>
+                    <button class="cymbal-button-primary"type="submit" style="margin: 0;">
+                      Rate 
+                  </button>
+                  </div>
+                
+                    
+                </span>
                 </div>
             </form>
-          <h3>Product got {{$.productRating}} / 5 Stars from customers({{$.productRatingCount}})</h3>
+            <div class="col-12">
+              <h3>Product Rating: ({{$.productRatingCount}}) :<span class="rate" >
+                {{ if eq $.productRating 5}}
+                <input type="radio" id="star5" name="rate" value="5" disabled checked/>
+                {{ else }}
+                <input type="radio" id="star5" name="rate" value="5" disabled/>
+                {{ end }}
+                <label for="star5" title="text">5 stars</label>
+                {{ if eq $.productRating 4}}
+                <input type="radio" id="star4" name="rate" value="4" disabled checked/>
+                {{ else }}
+                <input type="radio" id="star4" name="rate" value="4" disabled/>
+                {{ end }}
+                <label for="star4" title="text">4 stars</label>
+                {{ if eq $.productRating 3}}
+                <input type="radio" id="star3" name="rate" value="3" disabled checked/>
+                {{ else }}
+                <input type="radio" id="star3" name="rate" value="3" disabled/>
+                {{ end }}
+                <label for="star3" title="text">3 stars</label>
+                {{ if eq $.productRating 2}}
+                <input type="radio" id="star2" name="rate" value="2" disabled checked/>
+                {{ else }}
+                <input type="radio" id="star2" name="rate" value="2" disabled/>
+                {{ end }}
+                <label for="star2" title="text">2 stars</label>
+                {{ if eq $.productRating 1}}
+                <input type="radio" id="star1" name="rate" value="1" disabled checked/>
+                {{ else }}
+                <input type="radio" id="star1" name="rate" value="1" disabled/>
+                {{ end }}
+                <label for="star1" title="text">1 star</label> 
+              </span></h3>
+              <!--h3>Rated by {{$.ratingCount}} customers</h3-->
+            </div>
           <h2>{{ $.product.Item.Name }}</h2>
           <p class="product-price">{{ renderMoney $.product.Price }}</p>
           <p>{{ $.product.Item.Description }}</p>

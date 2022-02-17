@@ -634,7 +634,7 @@ the rules below could be extracted.
 }
 /* Css needed for Stars in Order.html */
 .rate {
-  float: left;
+  /*float: left;*/
   height: 46px;
   padding: 0 10px;
 }
@@ -658,13 +658,13 @@ the rules below could be extracted.
   color: #ffc700;    
 }
 .rate:not(:checked) > label:hover,
-.rate:not(:checked) > label:hover ~ label {
+.rate:not(:checked) > label:hover ~ label ~ input:not(:disabled) {
   color: #deb217;  
 }
-.rate > input:checked + label:hover,
-.rate > input:checked + label:hover ~ label,
-.rate > input:checked ~ label:hover,
-.rate > input:checked ~ label:hover ~ label,
-.rate > label:hover ~ input:checked ~ label {
+.rate > input:checked + label:hover ~ input:not(:disabled),
+.rate > input:checked + label:hover ~ label ~ input:not(:disabled),
+.rate > input:checked ~ label:hover ~ input:not(:disabled),
+.rate > input:checked ~ label:hover ~ label ~ input:not(:disabled),
+.rate > label:hover ~ input:checked ~ label ~ input:not(:disabled){
   color: #c59b08;
 }

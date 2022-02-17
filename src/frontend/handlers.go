@@ -130,7 +130,7 @@ func (fe *frontendServer) homeHandler(w http.ResponseWriter, r *http.Request) {
 		"is_cymbal_brand":   isCymbalBrand,
 		"deploymentDetails": getDeploymentDetails(r),
 		// Get AvgRating to use in HTML
-		"avgRating"			: answ.Rating,
+		"avgRating"			: 3,
 		"ratingCount"		: answ.RatingCount,
 	}); err != nil {
 		log.Error(err)
@@ -284,8 +284,8 @@ func (fe *frontendServer) productHandler(w http.ResponseWriter, r *http.Request)
 		"platform_name":     plat.provider,
 		"is_cymbal_brand":   isCymbalBrand,
 		"deploymentDetails": getDeploymentDetails(r),
-		"productRating": 	answ.Rating,
-		"productRatingCount": answ.RatingCount,
+		"productRating": 	4, //answ.Rating,
+		"productRatingCount": 5, //answ.RatingCount,
 	}); err != nil {
 		log.Println(err)
 	}

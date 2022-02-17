@@ -15,7 +15,7 @@ public class GrpcServer {
 		healthMgr = new HealthStatusManager();
 		server = ServerBuilder.forPort(9090).addService(new RatingService()).addService(healthMgr.getHealthService()).build();
 		server.start();
-		System.out.print("Ich bin neu! Service started at "+server.getPort());
+		System.out.print("Ich bin neu! Wirklich! Service started at "+server.getPort());
 		healthMgr.setStatus("", ServingStatus.SERVING);
 		server.awaitTermination();
 	}

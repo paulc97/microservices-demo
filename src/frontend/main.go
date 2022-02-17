@@ -149,6 +149,7 @@ func main() {
 	r.HandleFunc("/_healthz", func(w http.ResponseWriter, _ *http.Request) { fmt.Fprint(w, "ok") })
 	// Create Route
 	r.HandleFunc("/setRating", svc.setRatingHandler).Methods(http.MethodPost)
+	r.HandleFunc("/setProductRating", svc.setProductRatingHandler).Methods(http.MethodPost)
 
 	var handler http.Handler = r
 	handler = &logHandler{log: log, next: handler} // add logging

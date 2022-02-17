@@ -9,7 +9,7 @@ import static java.lang.Math.toIntExact;
 
 public class RatingService extends RatingServiceGrpc.RatingServiceImplBase {
 	
-	private hipstershop.persistence.PersistenceService persistenceService = new PersistenceService();
+	private final hipstershop.persistence.PersistenceService persistenceService = new PersistenceService();
 	
 	@Override
 	public void rateProduct(RatingServiceOuterClass.ProductRequest request, StreamObserver<RatingServiceOuterClass.ApiResponse> responseObserver) {

@@ -9,6 +9,8 @@ public class PersistenceService {
 
 	public void saveProductRating(String productId, Integer rating) {
 		if (productId == null || rating == null) return;
+		if (rating > 5) rating = 5;
+		if (rating < 0) rating = 5;
 		try (Connection connection = DriverManager.getConnection(url, user, password)) {
 			Statement statement = connection.createStatement();
 			statement.executeUpdate("INSERT INTO product_ratings(product_id, rating) VALUES('" + productId + "', " + rating + ");");
@@ -50,6 +52,8 @@ public class PersistenceService {
 
 	public void saveShopRating(Integer rating) {
 		if (rating == null) return;
+		if (rating > 5) rating = 5;
+		if (rating < 0) rating = 5;
 		try (Connection connection = DriverManager.getConnection(url, user, password)) {
 			Statement statement = connection.createStatement();
 			statement.executeUpdate("INSERT INTO shop_ratings(rating) VALUES(" + rating + ");");

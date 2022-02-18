@@ -26,7 +26,7 @@ public class PersistenceService {
 		if (productId == null) return 0;
 		try (Connection connection = DriverManager.getConnection(url, user, password)) {
 			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT avg(rating) FROM product_ratings WHERE productId='" + productId +"';");
+			ResultSet resultSet = statement.executeQuery("SELECT avg(rating) FROM product_ratings WHERE product_id='" + productId +"';");
 			if(resultSet.next()) {return (double)Math.round(resultSet.getDouble(1) * 100d) / 100d;}
 		}
 		catch (SQLException e) {
@@ -40,7 +40,7 @@ public class PersistenceService {
 		if (productId == null) return 0;
 		try (Connection connection = DriverManager.getConnection(url, user, password)) {
 			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT count(rating) FROM product_ratings WHERE productId='" + productId +"';");
+			ResultSet resultSet = statement.executeQuery("SELECT count(rating) FROM product_ratings WHERE product_id='" + productId +"';");
 			if(resultSet.next()) {return resultSet.getInt(1);}
 		}
 		catch (SQLException e) {

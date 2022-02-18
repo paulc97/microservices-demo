@@ -28,7 +28,7 @@ public class RatingService extends RatingServiceGrpc.RatingServiceImplBase {
 		RatingServiceOuterClass.ProductRatingResponse.Builder response = RatingServiceOuterClass.ProductRatingResponse.newBuilder();
 		
 		response.setRating(persistenceService.getProductRating(request.getProductId()));
-		response.setRatingCount(Long.valueOf(persistenceService.getNumberOfProductRatings(request.getProductId())));
+		response.setRatingCount(persistenceService.getNumberOfProductRatings(request.getProductId()));
 		response.setResponseMessage("SUCESS: rating send");
 		responseObserver.onNext(response.build());
 		responseObserver.onCompleted();
@@ -51,7 +51,7 @@ public class RatingService extends RatingServiceGrpc.RatingServiceImplBase {
 		RatingServiceOuterClass.ShopRatingResponse.Builder response = RatingServiceOuterClass.ShopRatingResponse.newBuilder();
 		
 		response.setRating(persistenceService.getShopRating());
-		response.setRatingCount(Long.valueOf(persistenceService.getNumberOfShopRatings()));
+		response.setRatingCount(persistenceService.getNumberOfShopRatings());
 		response.setResponseMessage("SUCESS: rating send");
 		responseObserver.onNext(response.build());
 		responseObserver.onCompleted();

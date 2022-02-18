@@ -58,16 +58,14 @@ func (fe *frontendServer) homeHandler(w http.ResponseWriter, r *http.Request) {
 	currencies, err := fe.getCurrencies(r.Context())
 
 	answ, err := pb.NewRatingServiceClient(fe.ratingSvcConn).
-	GetShopRating(r.Context(), &pb.Empty{
-	})
+		GetShopRating(r.Context(), &pb.Empty{})
 	log.WithField("answ", answ).Debug("New answer")
 
 	if err != nil {
 		renderHTTPError(log, r, w, errors.Wrap(err, "failed to complete the order"), http.StatusInternalServerError)
 		return
 	}
-	
-	
+
 	if err != nil {
 		renderHTTPError(log, r, w, errors.Wrap(err, "could not retrieve currencies"), http.StatusInternalServerError)
 		return
@@ -130,8 +128,8 @@ func (fe *frontendServer) homeHandler(w http.ResponseWriter, r *http.Request) {
 		"is_cymbal_brand":   isCymbalBrand,
 		"deploymentDetails": getDeploymentDetails(r),
 		// Get AvgRating to use in HTML
-		"avgRating"			: 3,
-		"ratingCount"		: answ.RatingCount,
+		"avgRating":   int(answ.Rating),
+		"ratingCount": answ.RatingCount,
 	}); err != nil {
 		log.Error(err)
 	}
@@ -141,28 +139,28 @@ func (fe *frontendServer) homeHandler(w http.ResponseWriter, r *http.Request) {
 
 func (fe *frontendServer) setRatingHandler(w http.ResponseWriter, r *http.Request) {
 	log := r.Context().Value(ctxKeyLog{}).(logrus.FieldLogger)
-	
+
 	// get vars
 	orderId := r.FormValue("orderId")
-	rate,error := strconv.ParseInt(r.FormValue("rate")[0:],10,64)
+	rate, error := strconv.ParseInt(r.FormValue("rate")[0:], 10, 64)
 
 	if orderId != "" && error == nil {
-		 // log 
+		// log
 		log.WithField("orderId", orderId).WithField("Rating", rate).Debug("New Rating")
 
 		//Send Rating to Backend
-		 answ, err := pb.NewRatingServiceClient(fe.ratingSvcConn).
-		 	RateShop(r.Context(), &pb.ShopRequest{
-		 		Rating: rate,
-		 	})
-			 log.WithField("answ", answ).Debug("New answer")
+		answ, err := pb.NewRatingServiceClient(fe.ratingSvcConn).
+			RateShop(r.Context(), &pb.ShopRequest{
+				Rating: rate,
+			})
+		log.WithField("answ", answ).Debug("New answer")
 
-		 if err != nil {
-		 	renderHTTPError(log, r, w, errors.Wrap(err, "failed to complete the order"), http.StatusInternalServerError)
-		 	return
-		 }
+		if err != nil {
+			renderHTTPError(log, r, w, errors.Wrap(err, "failed to complete the order"), http.StatusInternalServerError)
+			return
+		}
 	}
-	
+
 	// redirect to "/"
 	w.Header().Set("location", "/")
 	w.WriteHeader(http.StatusFound)
@@ -170,29 +168,29 @@ func (fe *frontendServer) setRatingHandler(w http.ResponseWriter, r *http.Reques
 
 func (fe *frontendServer) setProductRatingHandler(w http.ResponseWriter, r *http.Request) {
 	log := r.Context().Value(ctxKeyLog{}).(logrus.FieldLogger)
-	
+
 	// get vars
 	product_id := r.FormValue("product_id")
-	rate,error := strconv.ParseInt(r.FormValue("rate")[0:],10,64)
+	rate, error := strconv.ParseInt(r.FormValue("rate")[0:], 10, 64)
 
 	if product_id != "" && error == nil {
-		 // log 
+		// log
 		log.WithField("product_id", product_id).WithField("Rating", rate).Debug("New Product Rating")
 
 		//Send Rating to Backend
-		 answ, err := pb.NewRatingServiceClient(fe.ratingSvcConn).
-		 RateProduct(r.Context(), &pb.ProductRequest{
+		answ, err := pb.NewRatingServiceClient(fe.ratingSvcConn).
+			RateProduct(r.Context(), &pb.ProductRequest{
 				ProductId: product_id,
-		 		Rating: rate,
-		 	})
-			 log.WithField("answ", answ).Debug("New answer")
+				Rating:    rate,
+			})
+		log.WithField("answ", answ).Debug("New answer")
 
-		 if err != nil {
-		 	renderHTTPError(log, r, w, errors.Wrap(err, "failed to complete the order"), http.StatusInternalServerError)
-		 	return
-		 }
+		if err != nil {
+			renderHTTPError(log, r, w, errors.Wrap(err, "failed to complete the order"), http.StatusInternalServerError)
+			return
+		}
 	}
-	
+
 	// redirect to "/"
 	w.Header().Set("location", "/product/"+product_id)
 	w.WriteHeader(http.StatusFound)
@@ -230,11 +228,11 @@ func (fe *frontendServer) productHandler(w http.ResponseWriter, r *http.Request)
 	log.WithField("id", id).WithField("currency", currentCurrency(r)).
 		Debug("serving product page")
 
-		answ, err := pb.NewRatingServiceClient(fe.ratingSvcConn).
+	answ, err := pb.NewRatingServiceClient(fe.ratingSvcConn).
 		GetProductRating(r.Context(), &pb.ProductRatingRequest{
 			ProductId: id,
 		})
-		log.WithField("answ", answ).Debug("New answer")
+	log.WithField("answ", answ).Debug("New answer")
 
 	p, err := fe.getProduct(r.Context(), id)
 	if err != nil {
@@ -271,21 +269,21 @@ func (fe *frontendServer) productHandler(w http.ResponseWriter, r *http.Request)
 	}{p, price}
 
 	if err := templates.ExecuteTemplate(w, "product", map[string]interface{}{
-		"session_id":        sessionID(r),
-		"request_id":        r.Context().Value(ctxKeyRequestID{}),
-		"ad":                fe.chooseAd(r.Context(), p.Categories, log),
-		"user_currency":     currentCurrency(r),
-		"show_currency":     true,
-		"currencies":        currencies,
-		"product":           product,
-		"recommendations":   recommendations,
-		"cart_size":         cartSize(cart),
-		"platform_css":      plat.css,
-		"platform_name":     plat.provider,
-		"is_cymbal_brand":   isCymbalBrand,
-		"deploymentDetails": getDeploymentDetails(r),
-		"productRating": 	4, //answ.Rating,
-		"productRatingCount": 5, //answ.RatingCount,
+		"session_id":         sessionID(r),
+		"request_id":         r.Context().Value(ctxKeyRequestID{}),
+		"ad":                 fe.chooseAd(r.Context(), p.Categories, log),
+		"user_currency":      currentCurrency(r),
+		"show_currency":      true,
+		"currencies":         currencies,
+		"product":            product,
+		"recommendations":    recommendations,
+		"cart_size":          cartSize(cart),
+		"platform_css":       plat.css,
+		"platform_name":      plat.provider,
+		"is_cymbal_brand":    isCymbalBrand,
+		"deploymentDetails":  getDeploymentDetails(r),
+		"productRating":      int(answ.Rating),
+		"productRatingCount": answ.RatingCount,
 	}); err != nil {
 		log.Println(err)
 	}
@@ -402,7 +400,6 @@ func (fe *frontendServer) viewCartHandler(w http.ResponseWriter, r *http.Request
 		log.Println(err)
 	}
 }
-
 
 func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Request) {
 	log := r.Context().Value(ctxKeyLog{}).(logrus.FieldLogger)

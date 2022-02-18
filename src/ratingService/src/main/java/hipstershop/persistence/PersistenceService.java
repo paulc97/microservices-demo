@@ -27,7 +27,8 @@ public class PersistenceService {
 		try (Connection connection = DriverManager.getConnection(url, user, password)) {
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery("SELECT avg(rating) FROM product_ratings WHERE product_id='" + productId +"';");
-			if(resultSet.next()) {return (double)Math.round(resultSet.getDouble(1) * 100d) / 100d;}
+			//add zeros to 1d in order to get more decimal places (e.g. 100d for two decimal places)
+			if(resultSet.next()) {return (double)Math.round(resultSet.getDouble(1) * 1d) / 1d;}
 		}
 		catch (SQLException e) {
 			System.out.println("Connection failed");
@@ -69,7 +70,8 @@ public class PersistenceService {
 		try (Connection connection = DriverManager.getConnection(url, user, password)) {
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery("SELECT avg(rating) FROM shop_ratings;");
-			if(resultSet.next()) {return (double)Math.round(resultSet.getDouble(1) * 100d) / 100d;}
+			//add zeros to 1d in order to get more decimal places (e.g. 100d for two decimal places)
+			if(resultSet.next()) {return (double)Math.round(resultSet.getDouble(1) * 1d) / 1d;}
 		}
 		catch (SQLException e) {
 			System.out.println("Connection failed");

@@ -56,6 +56,16 @@ func (fe *frontendServer) homeHandler(w http.ResponseWriter, r *http.Request) {
 	log := r.Context().Value(ctxKeyLog{}).(logrus.FieldLogger)
 	log.WithField("currency", currentCurrency(r)).Info("home")
 	currencies, err := fe.getCurrencies(r.Context())
+
+	answ, err := pb.NewRatingServiceClient(fe.ratingSvcConn).
+	GetShopRating(r.Context(), &pb.Empty{
+	})
+	log.WithField("answ", answ).Debug("New answer")
+
+	if err != nil {
+		renderHTTPError(log, r, w, errors.Wrap(err, "failed to complete the order"), http.StatusInternalServerError)
+		return
+	}
 	
 	
 	if err != nil {
@@ -120,7 +130,8 @@ func (fe *frontendServer) homeHandler(w http.ResponseWriter, r *http.Request) {
 		"is_cymbal_brand":   isCymbalBrand,
 		"deploymentDetails": getDeploymentDetails(r),
 		// Get AvgRating to use in HTML
-		"avgRating"			: "3.0",
+		"avgRating"			: 3,
+		"ratingCount"		: answ.RatingCount,
 	}); err != nil {
 		log.Error(err)
 	}
@@ -157,6 +168,36 @@ func (fe *frontendServer) setRatingHandler(w http.ResponseWriter, r *http.Reques
 	w.WriteHeader(http.StatusFound)
 }
 
+func (fe *frontendServer) setProductRatingHandler(w http.ResponseWriter, r *http.Request) {
+	log := r.Context().Value(ctxKeyLog{}).(logrus.FieldLogger)
+	
+	// get vars
+	product_id := r.FormValue("product_id")
+	rate,error := strconv.ParseInt(r.FormValue("rate")[0:],10,64)
+
+	if product_id != "" && error == nil {
+		 // log 
+		log.WithField("product_id", product_id).WithField("Rating", rate).Debug("New Product Rating")
+
+		//Send Rating to Backend
+		 answ, err := pb.NewRatingServiceClient(fe.ratingSvcConn).
+		 RateProduct(r.Context(), &pb.ProductRequest{
+				ProductId: product_id,
+		 		Rating: rate,
+		 	})
+			 log.WithField("answ", answ).Debug("New answer")
+
+		 if err != nil {
+		 	renderHTTPError(log, r, w, errors.Wrap(err, "failed to complete the order"), http.StatusInternalServerError)
+		 	return
+		 }
+	}
+	
+	// redirect to "/"
+	w.Header().Set("location", "/product/"+product_id)
+	w.WriteHeader(http.StatusFound)
+}
+
 func (plat *platformDetails) setPlatformDetails(env string) {
 	if env == "aws" {
 		plat.provider = "AWS"
@@ -188,6 +229,12 @@ func (fe *frontendServer) productHandler(w http.ResponseWriter, r *http.Request)
 	}
 	log.WithField("id", id).WithField("currency", currentCurrency(r)).
 		Debug("serving product page")
+
+		answ, err := pb.NewRatingServiceClient(fe.ratingSvcConn).
+		GetProductRating(r.Context(), &pb.ProductRatingRequest{
+			ProductId: id,
+		})
+		log.WithField("answ", answ).Debug("New answer")
 
 	p, err := fe.getProduct(r.Context(), id)
 	if err != nil {
@@ -237,6 +284,8 @@ func (fe *frontendServer) productHandler(w http.ResponseWriter, r *http.Request)
 		"platform_name":     plat.provider,
 		"is_cymbal_brand":   isCymbalBrand,
 		"deploymentDetails": getDeploymentDetails(r),
+		"productRating": 	4, //answ.Rating,
+		"productRatingCount": 5, //answ.RatingCount,
 	}); err != nil {
 		log.Println(err)
 	}

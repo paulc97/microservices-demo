@@ -10,57 +10,12 @@
     <artifactId>javax.annotation-api</artifactId>
     <version>1.2</version>
   </dependency>
-	 <dependency>
-           <groupId>io.opencensus</groupId>
-            <artifactId>opencensus-exporter-stats-prometheus</artifactId>
-            <version>0.13.2</version>
-        </dependency>
 	<dependency>
 			<groupId>com.google.protobuf</groupId>
 			<artifactId>protobuf-java</artifactId>
 			<version>3.6.1</version>
 		</dependency>
-		<dependency>
-            <groupId>io.prometheus</groupId>
-            <artifactId>simpleclient_httpserver</artifactId>
-            <version>0.13.0</version>
-        </dependency>
-	<!-- https://mvnrepository.com/artifact/io.opencensus/opencensus-exporter-trace-jaeger -->
-<dependency>
-    <groupId>io.opencensus</groupId>
-    <artifactId>opencensus-exporter-trace-jaeger</artifactId>
-    <version>0.23.0</version>
-</dependency>
-
-		<dependency>
-            <groupId>io.opencensus</groupId>
-            <artifactId>opencensus-exporter-stats-stackdriver</artifactId>
-            <version>0.14.0</version>
-        </dependency>
-
-
-
-<dependency>
-            <groupId>io.opencensus</groupId>
-            <artifactId>opencensus-api</artifactId>
-            <version>0.13.2</version>
-        </dependency>
- <dependency>
-            <groupId>io.opencensus</groupId>
-            <artifactId>opencensus-contrib-grpc-metrics</artifactId>
-            <version>0.13.2</version>
-        </dependency>
-	   <dependency>
-            <groupId>io.opencensus</groupId>
-            <artifactId>opencensus-impl</artifactId>
-            <version>0.13.2</version>
-            <scope>runtime</scope>
-        </dependency>
-		<dependency>
-  <groupId>io.opencensus</groupId>
-  <artifactId>opencensus-exporter-trace-stackdriver</artifactId>
-  <version>0.30.0</version>
-</dependency>
+		
 		<dependency>
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-netty-shaded</artifactId>

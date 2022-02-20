@@ -29,7 +29,7 @@ public class RatingService extends RatingServiceGrpc.RatingServiceImplBase {
 		
 		response.setRating(persistenceService.getProductRating(request.getProductId()));
 		response.setRatingCount(persistenceService.getNumberOfProductRatings(request.getProductId()));
-		response.setResponseMessage("SUCESS: rating send");
+		response.setResponseMessage("SUCCESS: rating send");
 		responseObserver.onNext(response.build());
 		responseObserver.onCompleted();
 	}
@@ -52,7 +52,7 @@ public class RatingService extends RatingServiceGrpc.RatingServiceImplBase {
 		
 		response.setRating(persistenceService.getShopRating());
 		response.setRatingCount(persistenceService.getNumberOfShopRatings());
-		response.setResponseMessage("SUCESS: rating send");
+		response.setResponseMessage("SUCCESS: rating send");
 		responseObserver.onNext(response.build());
 		responseObserver.onCompleted();
 	}
